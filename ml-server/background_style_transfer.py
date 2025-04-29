@@ -4,6 +4,7 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 import tensorflow_hub as hub
+import cv2
 
 # 스타일 변환 모델 로드
 hub_model = hub.load('https://tfhub.dev/google/magenta/arbitrary-image-stylization-v1-256/2')
@@ -42,11 +43,18 @@ def stylize_background(content_path, style_path, mask_path, output_path):
     mask_np = np.array(mask_image.resize(content_image.size)).astype(np.float32) / 255.0
     mask_np = np.expand_dims(mask_np, axis=-1)  # (H, W) → (H, W, 1)
 
+    # 마스크를 Gaussian Blur로 부드럽게
+    mask_np_blurred = cv2.GaussianBlur(mask_np, (31, 31), sigmaX=0, sigmaY=0)
+
+    # 🔥 blur 후에도 다시 expand_dims 해주기
+    mask_np_blurred = np.expand_dims(mask_np_blurred, axis=-1)
+    
+    # 데이터 타입 변환
     content_np = np.array(content_image).astype(np.float32) / 255.0
     stylized_np = stylized_np.astype(np.float32) / 255.0
 
-    # 🔥 최종 합성
-    combined = mask_np * content_np + (1 - mask_np) * stylized_np
+    # 🔥 Soft blending
+    combined = mask_np_blurred * content_np + (1 - mask_np_blurred) * stylized_np
     combined = np.clip(combined * 255, 0, 255).astype(np.uint8)
 
     # 저장

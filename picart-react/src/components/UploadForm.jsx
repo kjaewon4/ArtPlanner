@@ -57,6 +57,9 @@ export default function UploadForm({ selectedStyle }) {
         <button className={mode === "background" ? "active" : ""} onClick={() => setMode("background")}>
           배경만 스타일 변경
         </button>
+        <button className={mode === "compose" ? "active" : ""} onClick={() => setMode("compose")}>
+          배경만 합성
+        </button>
       </div>
 
       <input

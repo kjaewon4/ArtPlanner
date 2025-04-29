@@ -10,6 +10,7 @@ import shutil
 from nst_model import run_style_transfer
 from background_removal import remove_background
 from background_style_transfer import stylize_background
+from compose_foreground import compose_foreground 
 
 app = FastAPI()
 
@@ -34,23 +35,31 @@ os.makedirs(MASK_DIR, exist_ok=True)
 async def style_transfer(
     style_filename: str = Form(...),
     content: UploadFile = File(...),
-    mode: str = Form("full")  # full or background
+    mode: str = Form("full")  # full, background, compose
 ):
     content_path = os.path.join(UPLOAD_DIR, content.filename)
     style_path = os.path.join(STYLE_DIR, style_filename)
     output_path = os.path.join(OUTPUT_DIR, f"styled_{content.filename}")
     mask_path = os.path.join(MASK_DIR, f"mask_{content.filename}")
 
+    # 파일 저장
     with open(content_path, "wb") as buffer:
         shutil.copyfileobj(content.file, buffer)
 
     if mode == "full":
         # 전체 스타일 변환
         run_style_transfer(content_path, style_path, output_path)
+
     elif mode == "background":
         # 배경만 스타일 변환
         remove_background(content_path, mask_path)
         stylize_background(content_path, style_path, mask_path, output_path)
+
+    elif mode == "compose":
+        # 배경은 스타일 이미지 그대로 두고, 인물만 합성
+        remove_background(content_path, mask_path)
+        compose_foreground(content_path, style_path, mask_path, output_path)
+
     else:
         return JSONResponse(content={"error": "Invalid mode"}, status_code=400)
 

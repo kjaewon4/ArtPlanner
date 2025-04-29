@@ -27,7 +27,7 @@ def remove_background(input_path, output_mask_path):
     with torch.no_grad():
         pred = net(transformed)[0]
     pred = pred.squeeze().cpu().numpy()
-    mask = (pred > 0.5).astype(np.uint8) * 255
+    mask = (pred > 0.3).astype(np.uint8) * 255
 
     mask_img = Image.fromarray(mask)
     mask_img = mask_img.resize(image.size)  # 원본 크기로 리사이즈
