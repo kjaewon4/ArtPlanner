@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+python-multipart
+Pillow
+numpy
+tensorflow
+tensorflow_hub
+torch
+torchvision
+opencv-python
+celery
+redis
+scikit-image
+
+# pip install -r requirements.txt
