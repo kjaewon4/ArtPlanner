@@ -1,34 +1,28 @@
 import React from 'react';
-import {Link, useNavigate} from 'react-router-dom';
-import {logout} from '../services/authService';
-import './Header.css';
+import { Link } from 'react-router-dom';
+import { ChevronDown, Globe, Database, User } from 'lucide-react';
 
-const Header = ({user, setUser}) => {
-    const navigate = useNavigate();
+export default function Header() {
+  return (
+    <header className="bg-white">
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+        {/* 좌측: 로고 + 메뉴 */}
+        <div className="flex items-center space-x-12">
+          {/* 로고 */}
+          <Link to="/" className='no-underline'>
+                <div className="text-[22px] font-bold italic text-[#3B28FF]">PicArt</div>
+          </Link>
+        </div>
 
-    const handleLogout = () => {
-        logout();
-        setUser(null);
-        navigate('/login');
-    };
+        {/* 우측: 아이콘들 */}
+        <div className="flex items-center space-x-6">
+          {/* 사용자 아이콘 - 회색 원 배경 */}
+          <button className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
+            <User size={16} strokeWidth={2.2} className="text-black" />
+            </button>
 
-    return (
-        <header className="header">
-            <div className="header__left">
-                <Link className="header__logo" to="/">PicArt</Link>
-            </div>
-            <div className="header__right">
-                {user ? (
-                    <>
-                        <span className="header__user">{user.username}</span>
-                        <button className="header__button" onClick={handleLogout}>로그아웃</button>
-                    </>
-                ) : (
-                    <Link className="header__button" to="/login">로그인</Link>
-                )}
-            </div>
-        </header>
-    );
-};
-
-export default Header;
+        </div>
+      </div>
+    </header>
+  );
+}

@@ -34,6 +34,12 @@ input[type="file"] {
   width: 100%;
   border-radius: 12px;
   margin-bottom: 1rem;
+
+  display: flex;
+  flex-direction: row;  /* ← 이거 없으면 세로 쌓임 */
+  align-items: flex-start;
+  justify-content: space-between; /* 또는 center */
+  gap: 2rem;
 }
 
 .result-container img.result {

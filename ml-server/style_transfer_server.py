@@ -1,4 +1,5 @@
 # ml-server/style_transfer_server.py
+# FastAPI 서버
 # (mode = "full" or "background" 분기 처리)
 from fastapi import FastAPI, UploadFile, Form, File
 from fastapi.responses import FileResponse, JSONResponse
@@ -7,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import os
 import shutil
 
+from fast_style_transfer import fast_style_transfer
 from nst_model import run_style_transfer
 from background_removal import remove_background
 from background_style_transfer import stylize_background
@@ -64,6 +66,52 @@ async def style_transfer(
         return JSONResponse(content={"error": "Invalid mode"}, status_code=400)
 
     return FileResponse(output_path, media_type="image/png")
+
+from fast_style_transfer import fast_style_transfer
+
+# Fast Neural Style Transfer (스타일 이름 기반)
+@app.post("/api/fast-style-transfer")
+async def fast_style_transfer_api(
+    style_name: str = Form(...),  # 예: "starry_night"
+    content: UploadFile = File(...)
+):
+    content_path = os.path.join(UPLOAD_DIR, content.filename)
+    output_path = os.path.join(OUTPUT_DIR, f"faststyled_{content.filename}")
+
+    # 파일 저장
+    with open(content_path, "wb") as buffer:
+        shutil.copyfileobj(content.file, buffer)
+
+    try:
+        fast_style_transfer(content_path, style_name, output_path)
+    except FileNotFoundError as e:
+        return JSONResponse(content={"error": str(e)}, status_code=404)
+    except Exception as e:
+        return JSONResponse(content={"error": f"Server error: {str(e)}"}, status_code=500)
+
+    return FileResponse(output_path, media_type="image/png")
+
+@app.post("/api/remove/background")
+async def remove_background_api(content: UploadFile = File(...)):
+    try:
+        content_path = os.path.join(UPLOAD_DIR, content.filename)
+        output_path = os.path.join(OUTPUT_DIR, f"alpha_{content.filename}.png")
+
+        # 1. 파일 저장
+        with open(content_path, "wb") as buffer:
+            shutil.copyfileobj(content.file, buffer)
+
+        # 2. 배경 제거 → 알파 PNG 생성
+        remove_background(content_path, output_path)
+
+        # 3. 결과 파일 반환
+        return FileResponse(output_path, media_type="image/png")
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()  # ✅ 에러 상세 출력
+        return JSONResponse(status_code=500, content={"error": str(e)})
+
 
 if __name__ == "__main__":
     import uvicorn

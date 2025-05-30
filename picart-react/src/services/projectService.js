@@ -14,10 +14,10 @@ export const getProjects = async () => {
         },
         {
             id: 3,
-            projectName: "배경 제거거",
+            projectName: "배경 제거",
             explanation:
-                "사진의 배경을 제거할 수 있습니다.",
-        }
+                "인물모드와 사물모드를 선택해, 사진의 배경을 제거할 수 있습니다.",
+        },
     ];
 };
 
