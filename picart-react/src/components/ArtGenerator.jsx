@@ -43,7 +43,7 @@ export default function ArtGenerator() {
           {selectedStyle && (
             <div className="bg-white p-6 rounded-2xl shadow-lg space-y-4">
               <p className="text-sm font-semibold text-gray-700 mb-2">
-                {selectedStyle.nameEn} 작품
+                {selectedStyle.authorEn}의 {selectedStyle.nameEn} 
               </p>
               {/* 
                 ArtworkList 컴포넌트가 필요하다면 주석 해제 후 사용하세요.

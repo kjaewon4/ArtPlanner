@@ -13,7 +13,7 @@ export default function UploadForm({ selectedStyle }) {
   // selectedStyle은 { nameEn, authorEn } 형태
   const { nameEn, authorEn } = selectedStyle || {};
 
-  const NGROK_URL = 'https://4421-34-19-21-161.ngrok-free.app';
+  const NGROK_URL = 'https://1bbc-35-234-44-106.ngrok-free.app';
 
   const handleFileChange = (e) => {
     const selected = e.target.files[0];
@@ -36,33 +36,51 @@ export default function UploadForm({ selectedStyle }) {
     setLoading(true);
     setResultUrl(null);
 
-    const formData = new FormData();
-    formData.append('content', file);
-    // 프롬프트는 작가명과 작품명(또는 스타일명)을 조합해서 사용
+    // 1단계: 배경 제거 (로컬 MODNet 서버로)
+    const removeBgForm = new FormData();
+    removeBgForm.append('image', file);
+
+    const modnetResponse = await axios.post(
+      'http://localhost:8002/api/remove-background',
+      removeBgForm,
+      { responseType: 'blob' }
+    );
+    const rgbaImageBlob = modnetResponse.data;
+
+      // 프롬프트는 작가명과 작품명(또는 스타일명)을 조합해서 사용
     // 예시: "portrait photo in the style of Starry Night by Vincent van Gogh"
     const promptText = `
-      A high-resolution portrait photo of a person, 
-      keep the facial details, eyes, and clothing texture sharp and realistic, 
-      apply the style of ${nameEn} by ${authorEn} (e.g., Starry Night by Vincent van Gogh) 
-      especially to the background, hair edges, and clothing edges. 
-      Use swirling brush strokes, vibrant color palette in the background.
+      A high-resolution portrait of a person.
+      Preserve realistic facial details, eyes, skin texture, and clothing folds.
+      Apply the brushstroke style of ${authorEn}’s masterpiece “${nameEn}” 
+        – especially on hair edges, clothing edges, and in the background.
+      For the background:
+        - Fully render it in the style and color palette of “${nameEn}” by ${authorEn}.
+        - Keep swirling, vivid brushstrokes characteristic of ${authorEn}.
+      For the subject (face/body):
+        - Retain photorealistic facial features, but add subtle brushstroke textures along the hairline and clothing edge so the subject merges gently with the background style.
+        - Do not lose the person’s recognizable facial structure (eyes, nose, mouth).
     `;
-    console.log("promptText: ", promptText);
-    formData.append('prompt', promptText);
-    formData.append('strength', '0.6');
-    formData.append('guidance_scale', '8.5');
 
+    // 2단계: 스타일 변환 (코랩 SD 서버로)
+    const styleForm = new FormData();
+    styleForm.append('content', new File([rgbaImageBlob], file.name, { type: 'image/png' }));
+    styleForm.append('prompt', promptText);
+    styleForm.append('strength', '0.5');
+    styleForm.append('guidance_scale', '7.5');
+  
     try {
       const res = await axios.post(
         `${NGROK_URL}/api/sd-style-transfer`,
-        formData,
+        styleForm,
         { responseType: 'blob' }
       );
+      // res.data → 최종 합성된 이미지(512×512) Blob
       const url = URL.createObjectURL(res.data);
       setResultUrl(url);
     } catch (err) {
       console.error('Conversion error:', err);
-      alert('변환 중 오류가 발생했습니다. 콘솔을 확인하세요.');
+      alert(`변환 오류: ${err.message}`);
     } finally {
       setLoading(false);
     }
