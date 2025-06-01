@@ -1,6 +1,7 @@
 // src/components/UploadForm.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
+import { XIcon } from 'lucide-react';
 
 export default function UploadForm({ selectedStyle }) {
   const [file, setFile] = useState(null);
@@ -9,13 +10,26 @@ export default function UploadForm({ selectedStyle }) {
   const [resultUrl, setResultUrl] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  // selectedStyle은 { nameEn, authorEn } 형태
+  const { nameEn, authorEn } = selectedStyle || {};
+
+  const NGROK_URL = 'https://4421-34-19-21-161.ngrok-free.app';
+
   const handleFileChange = (e) => {
     const selected = e.target.files[0];
     if (selected) {
       setFile(selected);
       setPreviewUrl(URL.createObjectURL(selected));
+      setResultUrl(null);
     }
   };
+
+  const handleClear = () => {
+    setFile(null);
+    setPreviewUrl(null);
+    setResultUrl(null);
+  };
+
 
   const handleConvert = async () => {
     if (!file) return;
@@ -24,17 +38,23 @@ export default function UploadForm({ selectedStyle }) {
 
     const formData = new FormData();
     formData.append('content', file);
-    // 기본 프롬프트 + 사용자 입력 프롬프트 결합
-    const promptText = customPrompt
-      ? `${customPrompt} in the style of ${selectedStyle}`
-      : `in the style of ${selectedStyle}`;
+    // 프롬프트는 작가명과 작품명(또는 스타일명)을 조합해서 사용
+    // 예시: "portrait photo in the style of Starry Night by Vincent van Gogh"
+    const promptText = `
+      A high-resolution portrait photo of a person, 
+      keep the facial details, eyes, and clothing texture sharp and realistic, 
+      apply the style of ${nameEn} by ${authorEn} (e.g., Starry Night by Vincent van Gogh) 
+      especially to the background, hair edges, and clothing edges. 
+      Use swirling brush strokes, vibrant color palette in the background.
+    `;
+    console.log("promptText: ", promptText);
     formData.append('prompt', promptText);
-    formData.append('strength', '0.3');
-    formData.append('guidance_scale', '7.5');
+    formData.append('strength', '0.6');
+    formData.append('guidance_scale', '8.5');
 
     try {
       const res = await axios.post(
-        '/api/sd-style-transfer',
+        `${NGROK_URL}/api/sd-style-transfer`,
         formData,
         { responseType: 'blob' }
       );
@@ -50,42 +70,49 @@ export default function UploadForm({ selectedStyle }) {
 
   return (
     <div className="bg-white p-6 rounded-2xl shadow-lg space-y-6">
-      {/* 업로드 박스 */}
-      <div className="border-2 border-dashed border-gray-300 h-40 flex items-center justify-center rounded-lg">
-        <label htmlFor="upload" className="flex flex-col items-center text-gray-500 cursor-pointer">
-          <svg className="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-          </svg>
-          <span>이미지 업로드</span>
-        </label>
+      {/* 업로드 박스: 선택 전/후 모두 동일 위치 */}
+      <div className="relative border-2 border-dashed border-gray-300 h-40 flex items-center justify-center rounded-lg overflow-hidden">
+        {!previewUrl && (
+          <label htmlFor="upload" className="flex flex-col items-center text-gray-500 cursor-pointer">
+            <svg className="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+            </svg>
+            <span>이곳에 이미지 업로드</span>
+          </label>
+        )}
+        {previewUrl && (
+          <>
+            <img
+              src={previewUrl}
+              alt="preview"
+              className=" h-full object-cover"
+            />
+            <button
+              onClick={handleClear}
+              className="absolute top-2 right-2 bg-white rounded-full p-1 shadow-md hover:bg-gray-100"
+            >
+              <XIcon size={16} className="text-gray-700" />
+            </button>
+          </>
+        )}
         <input
           id="upload"
           type="file"
           accept="image/*"
-          className="hidden"
+          className="absolute inset-0 opacity-0 cursor-pointer"
           onChange={handleFileChange}
         />
       </div>
 
-      {/* 미리보기 */}
-      {previewUrl && (
-        <div className="w-full flex justify-center">
-          <img
-            src={previewUrl}
-            alt="preview"
-            className="w-64 h-64 object-cover rounded-xl"
-          />
-        </div>
-      )}
-
+      {/* 미리보기 영역 (결과 혹은 업로드된 이미지 아래)에 제거 */}
       {/* 사용자 프롬프트 */}
-      <input
+      {/* <input
         type="text"
         value={customPrompt}
         onChange={(e) => setCustomPrompt(e.target.value)}
         placeholder="추가 프롬프트 입력 (옵션)"
         className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-      />
+      /> */}
 
       {/* 변환 버튼 */}
       <button
@@ -106,103 +133,15 @@ export default function UploadForm({ selectedStyle }) {
         <div className="mt-4">
           <h4 className="text-lg font-semibold mb-2">결과 이미지</h4>
           <img src={resultUrl} alt="Result" className="w-full rounded-xl shadow-md" />
+           <a
+            href={resultUrl}
+            download={`styled_${file.name}`}
+            className="block text-center w-full py-2 rounded-md text-white font-medium transition-colors bg-indigo-600 hover:bg-indigo-700"
+          >
+            이미지 다운로드
+          </a>
         </div>
       )}
     </div>
   );
 }
-
-// // src/components/UploadForm.jsx
-// import { useState } from "react";
-// import "./UploadForm.css";
-
-// export default function UploadForm({ selectedStyle }) {
-//   const [preview, setPreview] = useState(null);
-//   const [file, setFile] = useState(null);
-//   const [mode, setMode] = useState("full");
-//   const [loading, setLoading] = useState(false);
-//   const [resultUrl, setResultUrl] = useState(null);
-
-//   const handleUpload = async () => {
-//     if (!file || !selectedStyle) return;
-//     setLoading(true);
-
-//     const formData = new FormData();
-//     formData.append("style_filename", selectedStyle.fileName || selectedStyle.file_name);
-//     formData.append("content", file);
-//     formData.append("mode", mode);
-
-//     try {
-//       const res = await fetch("http://localhost:8000/api/style-transfer", {
-//         method: "POST",
-//         body: formData,
-//       });
-
-//       const blob = await res.blob();
-//       const downloadFileName = `PicArt_${selectedStyle?.nameKo}_스타일변환완료.png`;
-//       const imageObjectURL = URL.createObjectURL(blob);
-//       setResultUrl(imageObjectURL);
-
-
-//       const a = document.createElement("a");
-//       a.href = imageObjectURL;
-//       a.download = downloadFileName;
-//       a.style.display = "none";
-//       document.body.appendChild(a);
-//       a.click();
-//       document.body.removeChild(a);
-//     } catch (e) {
-//       console.error("업로드 실패", e);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   if (!selectedStyle) return null;
-
-//   return (
-//     <div className="upload-container" id="upload">
-//       <h2>{selectedStyle?.nameKo} 스타일로 변환</h2>
-
-//       <div className="mode-toggle">
-//         <button className={mode === "full" ? "active" : ""} onClick={() => setMode("full")}>
-//           전체 스타일 변경
-//         </button>
-//         <button className={mode === "background" ? "active" : ""} onClick={() => setMode("background")}>
-//           배경만 스타일 변경
-//         </button>
-//         <button className={mode === "compose" ? "active" : ""} onClick={() => setMode("compose")}>
-//           배경만 합성
-//         </button>
-//       </div>
-
-//       <input
-//         type="file"
-//         accept="image/*"
-//         onChange={(e) => {
-//           setFile(e.target.files[0]);
-//           setPreview(URL.createObjectURL(e.target.files[0]));
-//         }}
-//       />
-
-//       {preview && (
-//         <div className="preview-section">
-//           <img src={preview} alt="업로드 이미지" className="preview" />
-//           <button onClick={handleUpload} disabled={loading}>
-//             {loading ? "변환 중..." : "스타일 변환 시작"}
-//           </button>
-//         </div>
-//       )}
-
-//       {resultUrl && (
-//         <div className="result-container"> 
-//           <h3>변환된 이미지</h3>
-//           <img src={resultUrl} alt="결과 이미지" className="result" />
-//           <a href={resultUrl} download>이미지 다운로드</a>
-//           <button>엽서로 제작</button>
-
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
