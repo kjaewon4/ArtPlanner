@@ -109,6 +109,7 @@ export default function UploadForm({
       <div>
         <p className="text-sm font-semibold mb-2">스타일 선택</p>
         <StyleGallery onStyleClick={onStyleSelect} selected={selectedStyle} />
+        <p className='font-medium'>{selectedStyle.authorEn}의 {selectedStyle.nameEn}</p>
       </div>
 
       {/* 생성 버튼 */}

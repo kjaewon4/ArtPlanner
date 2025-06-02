@@ -13,6 +13,9 @@ export default function ArtGenerator() {
 
   return (
     <div className="flex flex-col w-full">
+       <h1 className="text-3xl font-bold text-center mb-2">내 사진을 <span className="text-[#3B28FF]">원하는 스타일로</span></h1>
+      <p className="text-center text-gray-600 mb-8">사진을 업로드하고 스타일을 선택해주세요</p>
+
       {/* ───────────── 상단 네비게이션(탭) ───────────── */}
       <div className="flex justify-center space-x-8 text-sm pt-8">
         <span className="text-[#3B28FF] border-b-2 border-[#3B28FF] pb-1">
@@ -33,7 +36,7 @@ export default function ArtGenerator() {
       </div>
 
       {/* ───────────── 메인 컨텐츠 영역 ───────────── */}
-      <div className="flex flex-col lg:flex-row w-full max-w-7xl mx-auto gap-8 p-8">
+      <div className="flex flex-col lg:flex-row w-full max-w-7xl mx-auto gap-8 p-8 bg-[rgb(238,241,243)] rounded-xl mt-8">
       {/* 왼쪽 영역 */}
       <div className="w-full lg:w-1/2 space-y-6">
         <UploadForm

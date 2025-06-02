@@ -14,14 +14,6 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* 우측: 아이콘들 */}
-        <div className="flex items-center space-x-6">
-          {/* 사용자 아이콘 - 회색 원 배경 */}
-          <button className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-200">
-            <User size={16} strokeWidth={2.2} className="text-black" />
-            </button>
-
-        </div>
       </div>
     </header>
   );

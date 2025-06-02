@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import html2canvas from 'html2canvas';
 import './StyledCalendar.css';
+import { Download } from 'lucide-react';
 
 const getDaysInMonth = (year, month) => {
   if (!year || !month) return []; // ⛔ 예외 처리
@@ -59,28 +60,56 @@ export default function StyledCalendar({ imageUrl, mood }) {
   return (
     <div className="calendar-outer-wrapper">
       <div ref={calendarRef} className="calendar-vintage-frame">
-        <div className="calendar-vintage-header">{year}年 {month}월</div>
-        <img src={imageUrl} alt="styled" className="calendar-vintage-image" />
 
-        <table className="calendar-vintage-table">
-          <thead>
-            <tr><th>일</th><th>월</th><th>화</th><th>수</th><th>목</th><th>금</th><th>토</th></tr>
-          </thead>
-          <tbody>
-            {calendarGrid.map((week, rowIdx) => (
-              <tr key={rowIdx}>
-                {week.map((day, colIdx) => (
-                  <td key={colIdx} className={colIdx === 0 ? 'sun' : ''}>
-                    {day || ''}
+          <div className='border-4 border-[#d4c4a2] px-8 py-2'>
+            <div className="calendar-vintage-header">{year}年 {month}월</div>
+            <img src={imageUrl} alt="styled" className="calendar-vintage-image" />
+
+            <table className="calendar-vintage-table">
+
+              <thead>
+                <tr>
+                  <td colSpan="7">
+                    <div className="h-[1px] border-b border-[#d7cdb9] w-full mt-1 " />
                   </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                </tr>
 
-        <div className="calendar-vintage-footer">오늘의 기분 {mood}</div>
-      </div>
+                <tr>
+                  <th className="text-red-600">일</th>
+                  <th>월</th>
+                  <th>화</th>
+                  <th>수</th>
+                  <th>목</th>
+                  <th>금</th>
+                  <th>토</th>
+                </tr>
+                
+                <tr>
+                  <td colSpan="7">
+                    <div className="h-[1px] border-b border-[#d7cdb9] w-full mb-2" />
+                  </td>
+                </tr>
+
+              </thead>
+
+              <tbody>
+                {calendarGrid.map((week, rowIdx) => (
+                  <tr key={rowIdx}>
+                    {week.map((day, colIdx) => (
+                      <td key={colIdx} className={`${colIdx === 0 ? 'text-red-600' : ''} text-[16px] font-medium`}>
+                        {day || ''}
+                      </td>
+
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {/* <hr className="border-t border-[#d7cdb9] shadow-md mt-1" />
+
+            <div className="calendar-vintage-footer">오늘의 기분 {mood}</div> */}
+          </div>
+        </div>
 
       <button onClick={handleDownload} className="calendar-download-btn">이미지 저장</button>
     </div>
