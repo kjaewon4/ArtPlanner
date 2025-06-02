@@ -3,10 +3,13 @@ import React, { useState } from 'react';
 import StyleGallery from './StyleGallery';
 // import ArtworkList from './ArtworkList'; // 필요에 따라 활성화
 import UploadForm from './UploadForm';
+import ResultPreview from './ResultPreview';
 
 export default function ArtGenerator() {
   // { nameEn: 'Starry Night', authorEn: 'Vincent van Gogh', ... } 형태 객체 혹은 null
   const [selectedStyle, setSelectedStyle] = useState(null);
+  const [file, setFile] = useState(null); 
+  const [resultUrl, setResultUrl] = useState(null);
 
   return (
     <div className="flex flex-col w-full">
@@ -30,36 +33,23 @@ export default function ArtGenerator() {
       </div>
 
       {/* ───────────── 메인 컨텐츠 영역 ───────────── */}
-      <div className="flex w-full max-w-7xl mx-auto mt-6 bg-gray-100 rounded-3xl p-8 space-x-8">
-        {/* ───────────── 왼쪽 컬럼: 스타일 선택 + 작품 리스트 ───────────── */}
-        <div className="w-1/2 space-y-6">
-          {/* ──── ① 스타일 캐러셀 카드 ──── */}
-          <div className="bg-white p-6 rounded-2xl shadow-lg space-y-4">
-            <p className="text-sm font-semibold text-gray-700 mb-2">스타일 선택</p>
-            <StyleGallery onStyleClick={setSelectedStyle} />
-          </div>
-
-          {/* ──── ② 선택된 스타일이 있을 때 작품 리스트 렌더 ──── */}
-          {selectedStyle && (
-            <div className="bg-white p-6 rounded-2xl shadow-lg space-y-4">
-              <p className="text-sm font-semibold text-gray-700 mb-2">
-                {selectedStyle.authorEn}의 {selectedStyle.nameEn} 
-              </p>
-              {/* 
-                ArtworkList 컴포넌트가 필요하다면 주석 해제 후 사용하세요.
-                예: <ArtworkList styleId={selectedStyle.nameEn} /> 
-              */}
-              {/* <ArtworkList styleId={selectedStyle.nameEn} /> */}
-          
-            </div>
-          )}
-        </div>
-
-        {/* ───────────── 오른쪽 컬럼: UploadForm ───────────── */}
-        <div className="w-1/2">
-          <UploadForm selectedStyle={selectedStyle} />
-        </div>
+      <div className="flex flex-col lg:flex-row w-full max-w-7xl mx-auto gap-8 p-8">
+      {/* 왼쪽 영역 */}
+      <div className="w-full lg:w-1/2 space-y-6">
+        <UploadForm
+          selectedStyle={selectedStyle}
+          onStyleSelect={setSelectedStyle}
+          onFileChange={setFile}
+          onResultUrlChange={setResultUrl}
+        />
       </div>
+
+      {/* 오른쪽 결과 영역 */}
+      <div className="w-full lg:w-1/2 bg-white rounded-2xl shadow p-6 flex items-center justify-center">
+        <ResultPreview resultUrl={resultUrl} fileName={file?.name} />
+      </div>
+    </div>
+
     </div>
   );
 }
