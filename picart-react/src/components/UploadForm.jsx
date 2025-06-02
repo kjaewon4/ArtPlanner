@@ -2,18 +2,19 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { XIcon } from 'lucide-react';
+import StyledCalendar from './StyledCalendar';
 
 export default function UploadForm({ selectedStyle }) {
   const [file, setFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [customPrompt, setCustomPrompt] = useState('');
+  const [showCalendar, setShowCalendar] = useState(false); // 캘린더 보기 상태 추가
   const [resultUrl, setResultUrl] = useState(null);
   const [loading, setLoading] = useState(false);
 
   // selectedStyle은 { nameEn, authorEn } 형태
   const { nameEn, authorEn } = selectedStyle || {};
 
-  const NGROK_URL = 'https://1bbc-35-234-44-106.ngrok-free.app';
+  const NGROK_URL = 'https://b1ac-34-16-213-28.ngrok-free.app';
 
   const handleFileChange = (e) => {
     const selected = e.target.files[0];
@@ -40,12 +41,12 @@ export default function UploadForm({ selectedStyle }) {
     const removeBgForm = new FormData();
     removeBgForm.append('image', file);
 
-    const modnetResponse = await axios.post(
-      'http://localhost:8002/api/remove-background',
-      removeBgForm,
-      { responseType: 'blob' }
-    );
-    const rgbaImageBlob = modnetResponse.data;
+    // const modnetResponse = await axios.post(
+    //   'http://localhost:8002/api/remove-background',
+    //   removeBgForm,
+    //   { responseType: 'blob' }
+    // );
+    // const rgbaImageBlob = modnetResponse.data;
 
       // 프롬프트는 작가명과 작품명(또는 스타일명)을 조합해서 사용
     // 예시: "portrait photo in the style of Starry Night by Vincent van Gogh"
@@ -54,25 +55,36 @@ export default function UploadForm({ selectedStyle }) {
       Preserve realistic facial details, eyes, skin texture, and clothing folds.
       Apply the brushstroke style of ${authorEn}’s masterpiece “${nameEn}” 
         – especially on hair edges, clothing edges, and in the background.
-      For the background:
+        - Don't change the face in the content file picture.
+         For the background:
         - Fully render it in the style and color palette of “${nameEn}” by ${authorEn}.
         - Keep swirling, vivid brushstrokes characteristic of ${authorEn}.
       For the subject (face/body):
-        - Retain photorealistic facial features, but add subtle brushstroke textures along the hairline and clothing edge so the subject merges gently with the background style.
+        - The face maintains realistic facial features without deformation, but adds subtle brush textures along the hairline and the edge of the garment to gently blend the subject with the background style.
         - Do not lose the person’s recognizable facial structure (eyes, nose, mouth).
     `;
 
-    // 2단계: 스타일 변환 (코랩 SD 서버로)
-    const styleForm = new FormData();
-    styleForm.append('content', new File([rgbaImageBlob], file.name, { type: 'image/png' }));
-    styleForm.append('prompt', promptText);
-    styleForm.append('strength', '0.5');
-    styleForm.append('guidance_scale', '7.5');
+    const formData = new FormData();
+    formData.append('content', file);
+    // 프롬프트는 작가명과 작품명(또는 스타일명)을 조합해서 사용
+    // 예시: "portrait photo in the style of Starry Night by Vincent van Gogh"
+   
+    console.log("promptText: ", promptText);
+    formData.append('prompt', promptText);
+    formData.append('strength', '0.4');
+    formData.append('guidance_scale', '7.5');
+
+    // // 2단계: 스타일 변환 (코랩 SD 서버로)
+    // const styleForm = new FormData();
+    // styleForm.append('content', new File([rgbaImageBlob], file.name, { type: 'image/png' }));
+    // styleForm.append('prompt', promptText);
+    // styleForm.append('strength', '0.5');
+    // styleForm.append('guidance_scale', '7.5');
   
     try {
       const res = await axios.post(
         `${NGROK_URL}/api/sd-style-transfer`,
-        styleForm,
+        formData,
         { responseType: 'blob' }
       );
       // res.data → 최종 합성된 이미지(512×512) Blob
@@ -123,14 +135,6 @@ export default function UploadForm({ selectedStyle }) {
       </div>
 
       {/* 미리보기 영역 (결과 혹은 업로드된 이미지 아래)에 제거 */}
-      {/* 사용자 프롬프트 */}
-      {/* <input
-        type="text"
-        value={customPrompt}
-        onChange={(e) => setCustomPrompt(e.target.value)}
-        placeholder="추가 프롬프트 입력 (옵션)"
-        className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-      /> */}
 
       {/* 변환 버튼 */}
       <button
@@ -147,19 +151,37 @@ export default function UploadForm({ selectedStyle }) {
       </button>
 
       {/* 결과 출력 */}
-      {resultUrl && (
-        <div className="mt-4">
-          <h4 className="text-lg font-semibold mb-2">결과 이미지</h4>
-          <img src={resultUrl} alt="Result" className="w-full rounded-xl shadow-md" />
-           <a
+    {resultUrl && (
+      <div className="mt-4 space-y-4">
+        <h4 className="text-lg font-semibold mb-2">결과 이미지</h4>
+        <img src={resultUrl} alt="Result" className="w-full rounded-xl shadow-md" />
+
+        <div className="flex gap-4">
+          <a
             href={resultUrl}
             download={`styled_${file.name}`}
-            className="block text-center w-full py-2 rounded-md text-white font-medium transition-colors bg-indigo-600 hover:bg-indigo-700"
+            className="flex-1 text-center py-2 rounded-md text-white font-medium transition-colors bg-indigo-600 hover:bg-indigo-700"
           >
             이미지 다운로드
           </a>
+
+          <button
+            onClick={() => setShowCalendar(true)}
+            className="flex-1 py-2 rounded-md text-white font-medium transition-colors bg-amber-500 hover:bg-amber-600"
+          >
+            캘린더로 만들기
+          </button>
+
         </div>
-      )}
+
+        {/* 캘린더 렌더링 */}
+        {showCalendar && (
+          <StyledCalendar imageUrl={resultUrl} mood="😊" />
+        )}
+
+
+      </div>
+    )}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import BackgroundRemover from "./components/BackgroundRemover";
 import SdImage from "./components/SdImage";
 import ArtGenerator from "./components/ArtGenerator";
+import StyledCalendar from "./components/StyledCalendar";
 
 
 function App() {
@@ -16,9 +17,7 @@ function App() {
         {/* <Route path="/" element={<ProjectList />} /> */}
         <Route path="/" element={<ArtGenerator />} />
 
-        <Route path="/projects/1" element={<GalleryPage />} />
-        {/* <Route path="/projects/2" element={<이미지 스케치로 변경경/>}/> */}
-        <Route path="/projects/3" element={<BackgroundRemover />} />
+        <Route path="/calendar" element={<StyledCalendar />} />
       </Routes>
     </Router>
   );
