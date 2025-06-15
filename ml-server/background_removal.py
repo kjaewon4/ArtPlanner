@@ -33,12 +33,12 @@ def remove_background(input_path, output_path):
 
     # 3. 마스크 후처리 (255 스케일, 원본 크기로 resize)
     mask = (pred > 0.3).astype(np.uint8) * 255
-    mask_img = Image.fromarray(mask).resize(image.size)  # ✅ 원본 크기로 resize
+    mask_img = Image.fromarray(mask).resize(image.size)  # 원본 크기로 resize
     mask_np = np.array(mask_img)
 
     # 4. RGB → RGBA 결합
     image_np = np.array(image)
-    rgba_np = np.dstack((image_np, mask_np))  # ✅ 크기 맞추고 나서 결합
+    rgba_np = np.dstack((image_np, mask_np))  # 크기 맞추고 나서 결합
 
     # 5. 저장
     Image.fromarray(rgba_np).save(output_path)

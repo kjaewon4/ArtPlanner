@@ -4,7 +4,7 @@ import './StyledCalendar.css';
 import { Download } from 'lucide-react';
 
 const getDaysInMonth = (year, month) => {
-  if (!year || !month) return []; // ⛔ 예외 처리
+  if (!year || !month) return []; // 예외 처리
 
   const date = new Date(year, month - 1, 1);
   const days = [];

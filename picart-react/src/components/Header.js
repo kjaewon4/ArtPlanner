@@ -10,7 +10,7 @@ export default function Header() {
         <div className="flex items-center space-x-12">
           {/* 로고 */}
           <Link to="/" className='no-underline'>
-                <div className="text-[22px] font-bold italic text-[#3B28FF]">PicArt</div>
+                <div className="text-[22px] font-bold italic text-[#3B28FF]">ArtPlanner</div>
           </Link>
         </div>
 

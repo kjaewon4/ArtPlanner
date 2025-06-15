@@ -109,10 +109,12 @@ async def remove_background_api(content: UploadFile = File(...)):
 
     except Exception as e:
         import traceback
-        traceback.print_exc()  # ✅ 에러 상세 출력
+        traceback.print_exc()  # 에러 상세 출력
         return JSONResponse(status_code=500, content={"error": str(e)})
 
 
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("style_transfer_server:app", host="0.0.0.0", port=8000, reload=True)
+
+# uvicorn style_transfer_server:app --host 0.0.0.0 --port 8000 --reload
