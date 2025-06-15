@@ -4,7 +4,8 @@
 <p align="center">
   <img src="https://github.com/user-attachments/assets/655689b6-06a8-4517-82c1-12e93de75c53" width="320" />
   <img src="https://github.com/user-attachments/assets/c26be71e-c689-4ac8-91be-daae607c95cb" width="320" />
-  <img src="https://github.com/user-attachments/assets/0a8a26f0-6f2d-4f8b-9c32-ac7b4c7b1822" height="250/>
+  <img src="https://github.com/user-attachments/assets/0a8a26f0-6f2d-4f8b-9c32-ac7b4c7b1822" height="250" />
+  <img src="https://github.com/user-attachments/assets/10584f04-71d7-4eff-bd3c-f24f17ccb9d9" width="320" />
 </p>
 
 
@@ -32,10 +33,6 @@
 6. **이미지 저장**: `html2canvas`로 변환 후 Blob 다운로드
 
 ### 배경 제거 (U²-Net)
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/10584f04-71d7-4eff-bd3c-f24f17ccb9d9" width="320" />
-
-</p>
 
 | 단계 | 설명 |
 |:--:|:--|
