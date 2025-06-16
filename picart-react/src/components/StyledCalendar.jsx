@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import html2canvas from 'html2canvas';
 import './StyledCalendar.css';
-import { Download } from 'lucide-react';
 
 const getDaysInMonth = (year, month) => {
   if (!year || !month) return []; // 예외 처리

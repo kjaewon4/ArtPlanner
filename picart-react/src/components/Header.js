@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown, Globe, Database, User } from 'lucide-react';
 
 export default function Header() {
   return (
@@ -13,7 +12,6 @@ export default function Header() {
                 <div className="text-[22px] font-bold italic text-[#3B28FF]">ArtPlanner</div>
           </Link>
         </div>
-
       </div>
     </header>
   );

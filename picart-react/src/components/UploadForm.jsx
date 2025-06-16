@@ -17,7 +17,7 @@ export default function UploadForm({
   const [loading, setLoading] = useState(false);
 
   const { nameEn, authorEn } = selectedStyle || {};
-  const NGROK_URL = 'https://bb91-34-126-88-105.ngrok-free.app';
+  const NGROK_URL = 'https://7c6b-34-125-120-152.ngrok-free.app';
 
   const handleFileChange = (e) => {
     const selected = e.target.files[0];
