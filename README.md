@@ -8,9 +8,7 @@
   <img src="https://github.com/user-attachments/assets/10584f04-71d7-4eff-bd3c-f24f17ccb9d9" width="320" />
 </p>
 
-<details>
-  
-  <summary>목차</summary>
+## 목차
   
   - [핵심 컨셉](#핵심-컨셉)
   - [기능 흐름](#기능-흐름)
@@ -22,10 +20,6 @@
   - [향후 확장 계획](#향후-확장-계획)
   - [프로젝트 실행 방법](#프로젝트-실행-방법)
   - [참고 자료](#참고-자료)
-
-</details>
-
-
 
 ---
 
