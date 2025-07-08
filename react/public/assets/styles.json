@@ -1,0 +1,142 @@
+[
+  {
+    "name": "Starry Night",
+    "korean": "별이 빛나는 밤",
+    "author": "Vincent van Gogh",
+    "file": "starry_night.jpg",
+    "description": "고흐가 정신병원에서 그린 대표작으로, 밤하늘의 격정적인 소용돌이를 표현함."
+  },
+  {
+    "name": "The Scream",
+    "korean": "절규",
+    "author": "Edvard Munch",
+    "file": "scream.jpg",
+    "description": "불안과 공포의 상징으로 현대인의 내면을 그려낸 표현주의 걸작."
+  },
+  {
+    "name": "Mona Lisa",
+    "korean": "모나리자",
+    "author": "Leonardo da Vinci",
+    "file": "mona_lisa.jpg",
+    "description": "신비로운 미소로 잘 알려진 세계에서 가장 유명한 초상화."
+  },
+  {
+    "name": "The Persistence of Memory",
+    "korean": "기억의 지속",
+    "author": "Salvador Dalí",
+    "file": "persistence_of_memory.jpg",
+    "description": "녹아내리는 시계를 통해 시간과 무의식을 표현한 초현실주의 대표작."
+  },
+  {
+    "name": "The Kiss",
+    "korean": "키스",
+    "author": "Gustav Klimt",
+    "file": "the_kiss.jpg",
+    "description": "황금빛으로 장식된 사랑을 그린 로맨틱하고 장식적인 작품."
+  },
+  {
+    "name": "Girl with a Pearl Earring",
+    "korean": "진주 귀걸이를 한 소녀",
+    "author": "Johannes Vermeer",
+    "file": "girl_with_pearl.jpg",
+    "description": "북유럽의 모나리자로 불리며, 소녀의 맑은 눈망울과 진주 귀걸이가 인상적인 초상화."
+  },
+  {
+    "name": "Impression, Sunrise",
+    "korean": "인상, 해돋이",
+    "author": "Claude Monet",
+    "file": "impression_sunrise.jpg",
+    "description": "인상주의 이름의 기원이 된 작품으로 빛과 색의 순간적 인상을 포착."
+  },
+  {
+    "name": "Dance at Le Moulin de la Galette",
+    "korean": "물랭 드 라 갈레트의 무도회",
+    "author": "Pierre-Auguste Renoir",
+    "file": "moulin_de_la_galette.jpg",
+    "description": "19세기 파리 사람들의 밝고 생동감 넘치는 일상을 담은 작품."
+  },
+  {
+    "name": "The Great Wave off Kanagawa",
+    "korean": "가나가와 앞바다의 큰 파도",
+    "author": "Katsushika Hokusai",
+    "file": "great_wave.jpg",
+    "description": "일본 전통 목판화의 대표작으로, 격렬한 파도와 후지산의 대비가 인상적."
+  },
+  {
+    "name": "Sunflowers",
+    "korean": "해바라기",
+    "author": "Vincent van Gogh",
+    "file": "sunflowers.jpg",
+    "description": "강렬한 색채와 질감으로 생명력을 표현한 고흐의 대표 정물화."
+  },
+  {
+    "name": "The Last Supper",
+    "korean": "최후의 만찬",
+    "author": "Leonardo da Vinci",
+    "file": "last_supper.jpg",
+    "description": "예수와 12제자의 마지막 식사를 묘사한 르네상스 걸작."
+  },
+  {
+    "name": "A Sunday Afternoon on the Island of La Grande Jatte",
+    "korean": "그랑드 자트섬의 일요일 오후",
+    "author": "Georges Seurat",
+    "file": "grande_jatte.jpg",
+    "description": "점묘법의 대표작으로, 정적인 구도와 색의 배합이 인상적."
+  },
+  {
+    "name": "Liberty Leading the People",
+    "korean": "자유를 이끄는 민중",
+    "author": "Eugène Delacroix",
+    "file": "liberty_people.jpg",
+    "description": "1830년 프랑스 7월 혁명을 기념하며 자유의 여신이 민중을 이끄는 모습."
+  },
+  {
+    "name": "Olympia",
+    "korean": "올랭피아",
+    "author": "Édouard Manet",
+    "file": "olympia.jpg",
+    "description": "누드화의 전통을 현대적으로 해석한 19세기 대표 논쟁작."
+  },
+  {
+    "name": "The Arnolfini Portrait",
+    "korean": "아르놀피니 부부 초상화",
+    "author": "Jan van Eyck",
+    "file": "arnolfini.jpg",
+    "description": "거울, 조명, 질감 등 사실적 묘사가 뛰어난 초기 르네상스 명작."
+  },
+  {
+    "name": "The Walk by the Sea",
+    "korean": "바닷가의 산책",
+    "author": "Joaquín Sorolla",
+    "file": "walk_by_sea.jpg",
+    "description": "밝은 햇살과 바닷바람을 표현한 인상주의적 해변 장면."
+  },
+  {
+    "name": "At the Moulin Rouge",
+    "korean": "물랭 루즈에서의 춤",
+    "author": "Henri de Toulouse-Lautrec",
+    "file": "moulin_rouge.jpg",
+    "description": "프랑스 파리의 밤문화와 보헤미안 삶을 표현한 작품."
+  },
+  {
+    "name": "The Red Room",
+    "korean": "빨강으로 된 방",
+    "author": "Henri Matisse",
+    "file": "red_room.jpg",
+    "description": "대담한 원색과 평면적 구도로 구성된 야수파 회화의 대표작."
+  },
+  {
+    "name": "Water Lilies",
+    "korean": "수련",
+    "author": "Claude Monet",
+    "file": "water_lilies.jpg",
+    "description": "모네의 연못을 모티브로 한 시리즈, 색과 빛의 조화로움이 돋보임."
+  },
+  {
+    "name": "Les Demoiselles d'Avignon",
+    "korean": "아비뇽의 처녀들",
+    "author": "Pablo Picasso",
+    "file": "demoiselles_avignon.jpg",
+    "description": "입체주의의 출발점이 된 피카소의 파격적 누드화."
+  }
+]

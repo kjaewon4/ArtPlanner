@@ -1,12 +1,10 @@
 # ml-server/background_removal.py
-# 
 import torch
 import torchvision.transforms as transforms
 from PIL import Image
 import numpy as np
-import os
 
-from u2net import U2NET  # ✅ 반드시 U²-Net 모델 파일 필요
+from u2net import U2NET  # 반드시 U²-Net 모델 파일 필요
 from torchvision import transforms
 
 # U²-Net 모델 로딩
