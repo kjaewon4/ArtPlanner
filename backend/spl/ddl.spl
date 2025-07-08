@@ -1,9 +1,32 @@
-CREATE TABLE tb_user (
-  id BIGINT AUTO_INCREMENT PRIMARY KEY,
-  username VARCHAR(50) UNIQUE,
-  email VARCHAR(100),
-  password VARCHAR(255),
-  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE style_artworks (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name_en VARCHAR(100) NOT NULL,
+    name_ko VARCHAR(100) NOT NULL,
+    author VARCHAR(100),
+    file_name VARCHAR(100) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
+-- 데이터 삽입 전체 20개
+INSERT INTO style_artworks (name_en, name_ko, author, file_name, description) VALUES
+('Starry Night', '별이 빛나는 밤', 'Vincent van Gogh', 'starry_night.jpg', '1889년, 반 고흐가 프랑스 생레미의 정신병원에서 창밖을 바라보며 그린 작품으로, 소용돌이치는 밤하늘과 고요한 마을의 대조를 통해 그의 내면의 감정을 표현한 대표적인 후기 인상주의 작품입니다.'),
+('The Scream', '절규', 'Edvard Munch', 'scream.jpg', '1893년에 그려진 이 작품은 뭉크가 산책 중 느낀 자연의 절규를 표현한 것으로, 인간의 불안과 공포를 상징하는 표현주의의 대표작입니다.'),
+('Mona Lisa', '모나리자', 'Leonardo da Vinci', 'mona_lisa.jpg', '1503년경 그려진 이 초상화는 모델의 신비로운 미소와 다 빈치의 섬세한 명암 기법이 돋보이며, 르네상스 회화의 정수로 평가받습니다.'),
+('The Persistence of Memory', '기억의 지속', 'Salvador Dalí', 'persistence_of_memory.jpg', '1931년에 제작된 이 작품은 녹아내리는 시계를 통해 꿈과 현실, 시간의 상대성을 표현하며 초현실주의의 상징으로 여겨집니다.'),
+('The Kiss', '키스', 'Gustav Klimt', 'the_kiss.jpg', '1908년 완성된 이 작품은 황금빛 패턴과 관능적 포즈로 사랑과 친밀감을 상징하며, 클림트의 황금시대 대표작으로 손꼽힙니다.'),
+('Girl with a Pearl Earring', '진주 귀걸이를 한 소녀', 'Johannes Vermeer', 'girl_with_pearl.jpg', '1665년경 그려진 이 작품은 소녀의 맑은 눈빛과 진주 귀걸이가 어우러져 ''북유럽의 모나리자''라 불리며 많은 사랑을 받고 있습니다.'),
+('Impression, Sunrise', '인상, 해돋이', 'Claude Monet', 'impression_sunrise.jpg', '1872년, 르아브르 항구의 해돋이를 묘사한 이 작품은 ''인상주의''라는 명칭의 기원이 되었으며 빛과 색의 순간을 포착한 것이 특징입니다.'),
+('Dance at Le Moulin de la Galette', '물랭 드 라 갈레트의 무도회', 'Pierre-Auguste Renoir', 'moulin_de_la_galette.jpg', '1876년 파리 몽마르트르의 무도회를 묘사한 작품으로, 빛의 반사와 사람들의 생동감을 화사한 색채로 표현했습니다.'),
+('The Great Wave off Kanagawa', '가나가와 앞바다의 큰 파도', 'Katsushika Hokusai', 'great_wave.jpg', '1831년 제작된 일본 우키요에 대표작으로, 거대한 파도가 후지산을 덮치려는 듯한 장면이 긴장감 있게 표현되었습니다.'),
+('Sunflowers', '해바라기', 'Vincent van Gogh', 'sunflowers.jpg', '1888년 고흐가 아를 시절 그린 연작으로, 강렬한 색채와 붓터치가 해바라기의 생명력을 담아내고 있습니다.'),
+('The Last Supper', '최후의 만찬', 'Leonardo da Vinci', 'last_supper.jpg', '1495~1498년 사이 제작된 이 작품은 예수와 12제자의 마지막 만찬 장면을 묘사하며, 원근법과 구도가 돋보이는 르네상스 예술의 정수입니다.'),
+('A Sunday Afternoon on the Island of La Grande Jatte', '그랑드 자트섬의 일요일 오후', 'Georges Seurat', 'grande_jatte.jpg', '1884~1886년경 제작된 이 작품은 점묘법을 통해 정적이고 고요한 분위기의 공원 장면을 묘사한 신인상주의의 대표작입니다.'),
+('Liberty Leading the People', '자유를 이끄는 민중', 'Eugène Delacroix', 'liberty_people.jpg', '1830년 7월 혁명을 기념하기 위해 제작된 이 작품은 프랑스 자유정신을 상징하며 민중과 여신의 역동적 구도가 특징입니다.'),
+('Olympia', '올랭피아', 'Édouard Manet', 'olympia.jpg', '1863년 살롱에 출품되어 충격을 준 작품으로, 전통적인 누드화 구도를 현대적으로 재해석해 당대 미술계에 큰 반향을 일으켰습니다.'),
+('The Arnolfini Portrait', '아르놀피니 부부 초상화', 'Jan van Eyck', 'arnolfini.jpg', '1434년에 그려진 이 작품은 사실적인 묘사와 상징이 가득한 구성으로 초기 북유럽 르네상스 회화의 걸작으로 평가받습니다.'),
+('The Walk by the Sea', '바닷가의 산책', 'Joaquín Sorolla', 'walk_by_sea.jpg', '1909년 완성된 이 작품은 스페인 해변의 햇살과 바람을 흰색 옷의 여성들로 표현하며 자연광 묘사가 인상적입니다.'),
+('At the Moulin Rouge', '물랭 루즈에서의 춤', 'Henri de Toulouse-Lautrec', 'moulin_rouge.jpg', '1895년경 제작된 이 작품은 파리의 밤문화와 몽마르트르 카바레의 생동감 있는 분위기를 포착한 상징적 작품입니다.'),
+('The Red Room', '빨강으로 된 방', 'Henri Matisse', 'red_room.jpg', '1908년에 제작된 이 작품은 대담한 색상과 평면적인 구성을 통해 일상의 정경을 장식적으로 표현한 야수파의 대표작입니다.'),
+('Water Lilies', '수련', 'Claude Monet', 'water_lilies.jpg', '모네가 지베르니 정원 연못을 소재로 그린 이 작품은 수련의 부드러운 움직임과 수면 반사의 표현이 인상적입니다.'),
+('Les Demoiselles d''Avignon', '아비뇽의 처녀들', 'Pablo Picasso', 'demoiselles_avignon.jpg', '1907년에 완성된 이 작품은 아프리카 조각과 입체주의적 형상을 결합해 현대미술의 혁신을 이끈 기념비적인 작품입니다.');
