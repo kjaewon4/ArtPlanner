@@ -1,6 +1,6 @@
 # ArtPlanner
 
-> **“내 사진을 명화처럼 바꿔 나만의 감성 굿즈(캘린더/엽서)로 제작할 수 있는 웹 서비스”**
+> **“ArtPlanner는 사용자가 업로드한 사진에 명화 스타일 변환 또는 배경 제거 기능을 제공하고, 스타일 변환 결과물을 캘린더 이미지로 생성할 수 있는 웹 서비스입니다.”**
 <p align="center">
   <img src="https://github.com/user-attachments/assets/655689b6-06a8-4517-82c1-12e93de75c53" width="320" />
   <img src="https://github.com/user-attachments/assets/c26be71e-c689-4ac8-91be-daae607c95cb" width="320" />
@@ -67,13 +67,24 @@
 ## 프로젝트 구조
 ```
 project-root/
-└── ml-server/
-    ├── style_transfer_server.py     # FastAPI 서버 진입점
-    ├── background_removal.py        # U²-Net 기반 배경 제거 함수
-    ├── u2net.pth                    # 사전학습된 PyTorch 모델 (필수)
-    ├── style_images/                # 명화 스타일 이미지 저장소
-    ├── uploads/                     # 사용자가 업로드한 원본 이미지
-    └── outputs/                     # 처리된 결과 이미지
+├── backend/                     # Spring Boot 서버
+│   └──spl
+│       └── ddl.sql            # DB 스키마 + 초기 데이터
+├── ml-server/
+│   ├── style_transfer_server.py     # FastAPI 서버 진입점
+│   ├── background_removal.py        # U²-Net 기반 배경 제거 함수
+│   ├── u2net.pth                    # 사전학습된 PyTorch 모델 (필수)
+│   ├── style_images/                # 명화 스타일 이미지 저장소
+│   ├── uploads/                     # 사용자가 업로드한 원본 이미지
+│   └── outputs/                     # 처리된 결과 이미지
+├── react/                           # React 프론트엔드
+│   ├── src/
+│   │   ├── components/         # React 컴포넌트
+│   │   ├── App.js
+│   │   └── index.js
+│   ├── .env.local
+│   └── package.json
+└── README.md
 ```
 
 ---
@@ -101,7 +112,87 @@ project-root/
 1. PDF 저장, 다이어리/엽서 템플릿 추가
 2. 캘린더 내 “오늘의 문구” 사용자 입력
 3. AI 문구 추천 (KoBART 등)
-4. My Page 기능 – 스타일 이미지 관리
+4. My Page 기능 – 스타일링한 이미지 관리
+
+---
+
+## 프로젝트 실행 방법
+### 데이터베이스 설정
+
+1. MySQL/MariaDB 콘솔 또는 CLI에서 데이터베이스 생성:
+  ```
+  CREATE DATABASE artplanner CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+  USE artplanner;
+  ```
+2. 저장소 루트에 위치한 ddl.sql 파일을 실행하여 style_artworks 테이블과 초기 데이터를 삽입:
+
+```mysql -u <사용자명> -p artplanner < ddl.sql```
+
+3. 테이블이 정상 생성되었는지 확인:
+```
+SHOW TABLES;
+SELECT COUNT(*) FROM style_artworks;
+```
+또는 MySQL Workbench에 붙여 넣어 실행
+
+### 백엔드 실행 (Google Colab)
+
+(Google Colab)
+
+1. ml-server/notebooks/sd-style-transfer.ipynb 파일의 'Open in Colab'버튼 클릭 후 Google Colab에서 코드 실행 준비 
+
+2. 런타임 > 러타임 유형 변경 > T4 GPU 이상의 옵션 선택 (CPU X)
+
+3. conf.get_default().auth_token에 ngrok 토큰 설정
+
+4. Colab 런타임에서  실행
+
+5. 출력된 Public URL을 복사해 둡니다.
+
+### 프론트엔드 실행 (로컬 개발)
+1. 의존성 설치 
+```
+cd frontend  // 리포지토리 루트에서 frontend 폴더로 이동
+npm install  // 의존성 설치
+```
+2. .env.local 파일 생성하고, 다음 변수 추가:
+```
+REACT_APP_API_URL=https://{Colab에서 받은 ngrok URL}
+```
+3. 개발 서버 실행:
+```
+npm start
+```
+4. 브라우저에서 http://localhost:3000 접속
+
+### 백엔드 실행 (로컬 개발)
+
+1. Spring Boot 실행
+
+(1) 서버 디렉토리(backend/)로 이동:
+```
+cd backend
+```
+(2) 의존성 빌드 및 애플리케이션 실행:
+* Gradle 사용:
+```
+./gradlew bootRun
+```
+
+2. FastAPI 서버 실행
+
+(1) ml-server 디렉토리로 이동:
+```
+cd ../ml-server
+```
+(2) 가상환경 활성화 및 의존성 설치 (필요 시):
+```
+pip install -r requirements.txt
+```
+(3) 서버 실행:
+```
+python style_transfer_server.py
+```
 
 ---
 
