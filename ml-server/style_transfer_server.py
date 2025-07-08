@@ -5,7 +5,6 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import os
 import shutil
-from nst_model import run_style_transfer
 from background_removal import remove_background
 
 app = FastAPI()
@@ -50,4 +49,5 @@ if __name__ == "__main__":
     import uvicorn
     uvicorn.run("style_transfer_server:app", host="0.0.0.0", port=8000, reload=True)
 
-# uvicorn style_transfer_server:app --host 0.0.0.0 --port 8000 --reload
+# cd ml-server
+# python ml-server/style_transfer_server.py
